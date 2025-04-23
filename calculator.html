@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>余賢德材料計算機</title>
+  <title>材料計算機2.0</title>
   <style>
     body {
       font-family: sans-serif;
@@ -63,12 +63,12 @@
 </head>
 <body>
   <div class="container">
-    <h2>Cm190地坪打底材</h2>
+    <h2>材料計算機2.0</h2>
 
     <label>請選擇材料：</label>
     <select id="material">
-      <option value="Cm190地坪打底材">Cm190地坪打底材</option>
-      <option value="黏著劑">黏著劑</option>
+      <option value="牆面打底材CM190">牆面打底材CM190</option>
+      <option value="地坪打底材CM170">地坪打底材CM170</option>
     </select>
 
     <label>厚度（公分）：</label>
@@ -88,7 +88,7 @@
       const areaPing = parseFloat(document.getElementById('areaPing').value);
       const material = document.getElementById('material').value;
       const unitWeight = 17; // 固定單位用量
-      const bagWeight = material === "黏著劑" ? 25 : 40; // 根據材料決定每包重量
+      const bagWeight = 40; // 不管選哪種都固定 40 公斤
 
       if (isNaN(thickness) || isNaN(areaPing)) {
         document.getElementById('result').innerText = "請完整填寫所有欄位。";
@@ -98,7 +98,8 @@
       const totalKg = thickness * unitWeight * areaPing;
       const totalBags = Math.ceil(totalKg / bagWeight);
 
-      document.getElementById('result').innerText = `總共需要材料約 ${totalKg.toFixed(1)} 公斤，建議準備 ${totalBags} 包（每包 ${bagWeight} 公斤）。`;
+      document.getElementById('result').innerText =
+        `總共需要材料約 ${totalKg.toFixed(1)} 公斤，建議準備 ${totalBags} 包（每包 40 公斤）。`;
     }
   </script>
 </body>
