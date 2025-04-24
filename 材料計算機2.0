@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>材料計算機2.0</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      background: #f3f4f6;
+      color: #111;
+      margin: 0;
+      padding: 20px;
+    }
+    .container {
+      max-width: 500px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 24px;
+    }
+    label {
+      display: block;
+      margin-top: 10px;
+      font-weight: bold;
+      font-size: 16px;
+    }
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+      font-size: 18px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 14px;
+      background: #2563eb;
+      color: #fff;
+      font-size: 18px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .result {
+      margin-top: 20px;
+      background: #e0f2fe;
+      padding: 15px;
+      border-radius: 8px;
+      font-weight: bold;
+      text-align: center;
+      border: 1px solid #90cdf4;
+      font-size: 18px;
+    }
+    .note {
+      font-size: 14px;
+      text-align: center;
+      margin-top: 10px;
+      color: #555;
+    }
+    #summary {
+      display: none;
+      background: #fff;
+      color: #000;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      font-size: 18px;
+      line-height: 1.8;
+      text-align: left;
+    }
+  </style>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+</head>
+<body>
+  <div class="container">
+    <h2>材料計算機2.0</h2>
+
+    <label>請選擇材料：</label>
+    <select id="material">
+      <option value="牆面打底材CM190">牆面打底材CM190</option>
+      <option value="地坪打底材CM170">地坪打底材CM170</option>
+    </select>
+
+    <label>厚度（公分）：</label>
+    <input type="number" id="thickness" placeholder="例如：5">
+
+    <label>面積（平方米）：</label>
+    <input type="number" id="areaPing" placeholder="例如：76">
+
+    <button onclick="calculate()">計算所需包數</button>
+    <button onclick="downloadJPG()">產出 JPG 圖片</button>
+
+    <div class="result" id="result"></div>
+    <div class="note">※ 手機用戶：圖片會開啟新頁，請長按圖片另存。</div>
+  </div>
+
+  <!-- 這個區塊只用來輸出圖片 -->
+  <div id="summary">
+    <h3>材料統計報表</h3>
+    <p id="sum-material"></p>
+    <p id="sum-thickness"></p>
+    <p id="sum-area"></p>
+    <p id="sum-bags"></p>
+  </div>
+
+  <script>
+    let latestTotalBags = 0;
+
+    function calculate() {
+      const thickness = parseFloat(document.getElementById('thickness').value);
+      const areaPing = parseFloat(document.getElementById('areaPing').value);
+      const material = document.getElementById('material').value;
+      const unitWeight = 17;
+      const bagWeight = 40;
+
+      if (isNaN(thickness) || isNaN(areaPing)) {
+        document.getElementById('result').innerText = "請完整填寫所有欄位。";
+        return;
+      }
+
+      const totalKg = thickness * unitWeight * areaPing;
+      const totalBags = Math.ceil(totalKg / bagWeight);
+      latestTotalBags = totalBags;
+
+      document.getElementById('result').innerText =
+        `您選擇的是 ${material}。\n總共需要材料約 ${totalKg.toFixed(1)} 公斤，建議準備 ${totalBags} 包（每包 40 公斤）。`;
+
+      // 更新 summary 區塊
+      document.getElementById('sum-material').innerText = `品項：${material}`;
+      document.getElementById('sum-thickness').innerText = `厚度：${thickness} 公分`;
+      document.getElementById('sum-area').innerText = `面積：${areaPing} 平方公尺`;
+      document.getElementById('sum-bags').innerText = `建議準備：${totalBags} 包`;
+    }
+
+    function downloadJPG() {
+      const summary = document.getElementById('summary');
+
+      if (latestTotalBags === 0) {
+        alert("請先計算，再產出圖片。");
+        return;
+      }
+
+      summary.style.display = "block";
+
+      html2canvas(summary, { scale: 2 }).then(canvas => {
+        const imageData = canvas.toDataURL('image/jpeg');
+        const win = window.open('');
+        win.document.write('<title>材料統計圖</title>');
+        win.document.write('<img src="' + imageData + '" style="width:100%">');
+        win.document.write('<p style="text-align:center;">請長按圖片另存</p>');
+        summary.style.display = "none";
+      });
+    }
+  </script>
+</body>
+</html>
