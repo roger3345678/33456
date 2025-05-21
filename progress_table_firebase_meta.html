@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
@@ -63,7 +62,19 @@
       </div>
 
       <div id="table" class="divide-y divide-gray-100">
-        <!-- 在這裡插入每一位人名 row，照我之前給的格式即可 -->
+        <!-- 插入人名 row -->
+        {"".join([f"""
+        <div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+          <div class='pl-1 text-sm font-medium text-gray-700'>{name}</div>
+          <div class='cell status-unpaid readonly' data-name='{name}' data-month='5月' onclick='toggleStatus(this)'></div>
+          <div class='cell status-unpaid readonly' data-name='{name}' data-month='6月' onclick='toggleStatus(this)'></div>
+          <div class='cell status-unpaid readonly' data-name='{name}' data-month='7月' onclick='toggleStatus(this)'></div>
+          <div class='cell status-unpaid readonly' data-name='{name}' data-month='8月' onclick='toggleStatus(this)'></div>
+          <div class='cell status-unpaid readonly' data-name='{name}' data-month='9月' onclick='toggleStatus(this)'></div>
+        </div>
+        """ for name in [
+          "小隊長", "聰維", "題懿", "泓鑫", "文辰", "林烜瑱", "郭璟賢", "簡瑋辰", "朱崴麒",
+          "曹廷", "士豪", "羽祥", "興隆", "明宏", "哲鳴", "昕豐"]])
       </div>
     </div>
   </div>
@@ -124,5 +135,3 @@
   </script>
 </body>
 </html>
-
-
