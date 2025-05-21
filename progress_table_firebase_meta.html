@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>宜蘭園區伙食繳費登記（Firebase 同步）</title>
+  <title>宜蘭園區伙食繳費登記（雲端 同步）</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
-  <meta property="og:title" content="宜蘭園區伙食繳費登記（Firebase 同步）" />
+  <meta property="og:title" content="宜蘭園區伙食繳費登記（雲端 同步）" />
   <meta property="og:description" content="管理者點燈號自動更新，所有人即時看到同步變化。" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://roger3345678.github.io/33456/index.html" />
@@ -62,19 +62,136 @@
       </div>
 
       <div id="table" class="divide-y divide-gray-100">
-        <!-- 插入人名 row -->
-        {"".join([f"""
-        <div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
-          <div class='pl-1 text-sm font-medium text-gray-700'>{name}</div>
-          <div class='cell status-unpaid readonly' data-name='{name}' data-month='5月' onclick='toggleStatus(this)'></div>
-          <div class='cell status-unpaid readonly' data-name='{name}' data-month='6月' onclick='toggleStatus(this)'></div>
-          <div class='cell status-unpaid readonly' data-name='{name}' data-month='7月' onclick='toggleStatus(this)'></div>
-          <div class='cell status-unpaid readonly' data-name='{name}' data-month='8月' onclick='toggleStatus(this)'></div>
-          <div class='cell status-unpaid readonly' data-name='{name}' data-month='9月' onclick='toggleStatus(this)'></div>
-        </div>
-        """ for name in [
-          "小隊長", "聰維", "題懿", "泓鑫", "文辰", "林烜瑱", "郭璟賢", "簡瑋辰", "朱崴麒",
-          "曹廷", "士豪", "羽祥", "興隆", "明宏", "哲鳴", "昕豐"]])
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>小隊長</div>
+  <div class='cell status-unpaid readonly' data-name='小隊長' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='小隊長' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='小隊長' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='小隊長' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='小隊長' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>聰維</div>
+  <div class='cell status-unpaid readonly' data-name='聰維' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='聰維' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='聰維' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='聰維' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='聰維' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>題懿</div>
+  <div class='cell status-unpaid readonly' data-name='題懿' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='題懿' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='題懿' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='題懿' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='題懿' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>泓鑫</div>
+  <div class='cell status-unpaid readonly' data-name='泓鑫' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='泓鑫' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='泓鑫' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='泓鑫' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='泓鑫' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>文辰</div>
+  <div class='cell status-unpaid readonly' data-name='文辰' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='文辰' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='文辰' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='文辰' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='文辰' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>林烜瑱</div>
+  <div class='cell status-unpaid readonly' data-name='林烜瑱' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='林烜瑱' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='林烜瑱' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='林烜瑱' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='林烜瑱' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>郭璟賢</div>
+  <div class='cell status-unpaid readonly' data-name='郭璟賢' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='郭璟賢' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='郭璟賢' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='郭璟賢' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='郭璟賢' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>簡瑋辰</div>
+  <div class='cell status-unpaid readonly' data-name='簡瑋辰' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='簡瑋辰' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='簡瑋辰' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='簡瑋辰' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='簡瑋辰' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>朱崴麒</div>
+  <div class='cell status-unpaid readonly' data-name='朱崴麒' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='朱崴麒' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='朱崴麒' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='朱崴麒' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='朱崴麒' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>曹廷</div>
+  <div class='cell status-unpaid readonly' data-name='曹廷' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='曹廷' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='曹廷' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='曹廷' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='曹廷' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>士豪</div>
+  <div class='cell status-unpaid readonly' data-name='士豪' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='士豪' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='士豪' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='士豪' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='士豪' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>羽祥</div>
+  <div class='cell status-unpaid readonly' data-name='羽祥' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='羽祥' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='羽祥' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='羽祥' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='羽祥' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>興隆</div>
+  <div class='cell status-unpaid readonly' data-name='興隆' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='興隆' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='興隆' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='興隆' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='興隆' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>明宏</div>
+  <div class='cell status-unpaid readonly' data-name='明宏' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='明宏' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='明宏' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='明宏' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='明宏' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>哲鳴</div>
+  <div class='cell status-unpaid readonly' data-name='哲鳴' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='哲鳴' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='哲鳴' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='哲鳴' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='哲鳴' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+<div class='row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition'>
+  <div class='pl-1 text-sm font-medium text-gray-700'>昕豐</div>
+  <div class='cell status-unpaid readonly' data-name='昕豐' data-month='5月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='昕豐' data-month='6月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='昕豐' data-month='7月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='昕豐' data-month='8月' onclick='toggleStatus(this)'></div>
+  <div class='cell status-unpaid readonly' data-name='昕豐' data-month='9月' onclick='toggleStatus(this)'></div>
+</div>
+</div>
+          
       </div>
     </div>
   </div>
