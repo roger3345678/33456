@@ -20,9 +20,16 @@
       border: 1px solid #d1d5db;
       transition: background-color 0.2s, transform 0.1s;
     }
-    .cell:hover { transform: scale(1.05); }
-    .readonly { pointer-events: none; opacity: 0.6; }
-    .hidden-row { display: none; }
+    .cell:hover {
+      transform: scale(1.05);
+    }
+    .readonly {
+      pointer-events: none;
+      opacity: 0.6;
+    }
+    .hidden-row {
+      display: none;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-b from-gray-100 to-white min-h-screen text-gray-800">
@@ -44,8 +51,11 @@
         </div>
         <div class="flex gap-2">
           <button onclick="filterRows('all')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm px-3 py-1 rounded">全部</button>
+          <button onclick="filterRows('unpaid')" class="bg-yellow-200 hover:bg-yellow-300 text-yellow-900 text-sm px-3 py-1 rounded">只看未繳</button>
           <button onclick="filterRows('late')" class="bg-red-200 hover:bg-red-300 text-red-900 text-sm px-3 py-1 rounded">只看逾期</button>
-          <button onclick="enableAdmin()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">🔒 進入管理模式</button>
+          <button onclick="enableAdmin()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">
+            🔒 進入管理模式
+          </button>
         </div>
       </div>
 
@@ -70,7 +80,6 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let isAdmin = false;
-    let currentFilter = 'all';
 
     const members = ["小隊長", "聰維", "題懿", "泓鑫", "文辰", "林烜瑱", "郭璟賢", "簡瑋辰", "朱崴麒", "曹廷", "士豪", "羽祥", "興隆", "明宏", "哲鳴", "昕豐"];
     const months = ["5月", "6月", "7月", "8月", "9月"];
@@ -128,14 +137,12 @@
     }
 
     function filterRows(type) {
-      currentFilter = type;
       document.querySelectorAll('.row').forEach(row => {
-        if (type === 'all') {
-          row.classList.remove('hidden-row');
-        } else {
+        row.classList.remove('hidden-row');
+        if (type === 'unpaid' || type === 'late') {
           const cells = row.querySelectorAll('.cell');
-          const matched = Array.from(cells).some(cell => cell.classList.contains("status-" + type));
-          row.classList.toggle('hidden-row', !matched);
+          const matched = [...cells].some(cell => cell.classList.contains('status-' + type));
+          if (!matched) row.classList.add('hidden-row');
         }
       });
     }
@@ -152,7 +159,6 @@
           cell.classList.add("status-" + data[name][month]);
         }
       }
-      filterRows(currentFilter);
     });
 
     window.onload = () => {
@@ -169,7 +175,6 @@
             cell.classList.add("status-" + data[name][month]);
           }
         }
-        filterRows(currentFilter);
       });
     };
   </script>
