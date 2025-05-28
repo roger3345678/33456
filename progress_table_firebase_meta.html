@@ -132,8 +132,8 @@
         row.classList.remove('hidden-row');
         if (type === 'late') {
           const cells = row.querySelectorAll('.cell');
-          const hasLate = [...cells].some(cell => cell.classList.contains('status-late'));
-          if (!hasLate) row.classList.add('hidden-row');
+          const matched = [...cells].some(cell => cell.classList.contains('status-late'));
+          if (!matched) row.classList.add('hidden-row');
         }
       });
     }
