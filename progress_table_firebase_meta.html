@@ -45,9 +45,7 @@
         <div class="flex gap-2">
           <button onclick="filterRows('all')" class="bg-gray-200 hover:bg-gray-300 text-gray-700 text-sm px-3 py-1 rounded">全部</button>
           <button onclick="filterRows('late')" class="bg-red-200 hover:bg-red-300 text-red-900 text-sm px-3 py-1 rounded">只看逾期</button>
-          <button onclick="enableAdmin()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">
-            🔒 進入管理模式
-          </button>
+          <button onclick="enableAdmin()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">🔒 進入管理模式</button>
         </div>
       </div>
 
@@ -55,7 +53,6 @@
         <div class="text-left pl-1">姓名</div>
         <div>5月</div><div>6月</div><div>7月</div><div>8月</div><div>9月</div>
       </div>
-
       <div id="table" class="divide-y divide-gray-100"></div>
     </div>
   </div>
@@ -73,6 +70,7 @@
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
     let isAdmin = false;
+    let currentFilter = 'all';
 
     const members = ["小隊長", "聰維", "題懿", "泓鑫", "文辰", "林烜瑱", "郭璟賢", "簡瑋辰", "朱崴麒", "曹廷", "士豪", "羽祥", "興隆", "明宏", "哲鳴", "昕豐"];
     const months = ["5月", "6月", "7月", "8月", "9月"];
@@ -82,7 +80,7 @@
       table.innerHTML = '';
       members.forEach(name => {
         const row = document.createElement('div');
-        row.className = 'row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition';
+        row.className = "row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition";
         row.setAttribute('data-name', name);
 
         const nameCell = document.createElement('div');
@@ -130,18 +128,14 @@
     }
 
     function filterRows(type) {
+      currentFilter = type;
       document.querySelectorAll('.row').forEach(row => {
         if (type === 'all') {
           row.classList.remove('hidden-row');
-          return;
-        }
-
-        const cells = row.querySelectorAll('.cell');
-        const matched = Array.from(cells).some(cell => cell.classList.contains('status-' + type));
-        if (matched) {
-          row.classList.remove('hidden-row');
         } else {
-          row.classList.add('hidden-row');
+          const cells = row.querySelectorAll('.cell');
+          const matched = Array.from(cells).some(cell => cell.classList.contains("status-" + type));
+          row.classList.toggle('hidden-row', !matched);
         }
       });
     }
@@ -158,6 +152,7 @@
           cell.classList.add("status-" + data[name][month]);
         }
       }
+      filterRows(currentFilter);
     });
 
     window.onload = () => {
@@ -174,6 +169,7 @@
             cell.classList.add("status-" + data[name][month]);
           }
         }
+        filterRows(currentFilter);
       });
     };
   </script>
