@@ -24,30 +24,24 @@
     .readonly { pointer-events: none; opacity: 0.6; }
     .hidden-row { display: none; }
     .new-member {
-      position: relative;
-    }
-    .new-member::after {
-      content: "✨ 新人";
-      position: absolute;
-      right: -60px;
-      top: 5px;
-      background: linear-gradient(to right, #facc15, #f472b6);
-      color: white;
-      font-size: 0.75rem;
+      background: linear-gradient(to right, #fff700, #ff8c00);
       padding: 2px 6px;
-      border-radius: 9999px;
-      animation: blink 1s infinite alternate;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      margin-left: 4px;
+      animation: flash 1s infinite alternate;
     }
-    @keyframes blink {
-      0% { opacity: 1; }
-      100% { opacity: 0.4; }
+    @keyframes flash {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.1); opacity: 0.6; }
     }
   </style>
 </head>
 <body class="bg-gradient-to-b from-gray-100 to-white min-h-screen text-gray-800">
   <div class="max-w-3xl mx-auto p-4">
     <div class="bg-white rounded-2xl shadow-md p-6 space-y-4">
-      <h1 class="text-2xl font-bold text-center text-gray-700">📊 宜蘭園區伙食繳費登記（Firebase 同步）</h1>
+      <h1 class="text-2xl font-bold text-center text-gray-700">📊 宜蘭園區伙食繳費登記（雲端同步）</h1>
 
       <div class="flex justify-between items-center mb-2">
         <div class="flex flex-wrap gap-4 text-sm text-gray-600">
@@ -91,11 +85,10 @@
     let isAdmin = false;
 
     const members = [
-      "小隊長", "聰維", "題懿", "泓鑫", "文辰",
-      "子瑋", "林烜瑱", "郭璟賢", "簡瑋辰",
-      "朱崴麒", "曹廷", "士豪", "梁明淵", "興隆", "明宏", "哲鳴", "昕豐"
+      "小隊長", "聰維", "題懿", "泓鑫", "文辰", "子瑋", "林烜瑱",
+      "郭璟賢", "簡瑋辰", "朱崴麒", "曹廷", "士豪", "梁明淵",
+      "興隆", "明宏", "哲鳴", "昕豐"
     ];
-    const newMember = "梁明淵";
     const months = ["5月", "6月", "7月", "8月", "9月"];
 
     function createTable() {
@@ -107,11 +100,16 @@
         row.setAttribute('data-name', name);
 
         const nameCell = document.createElement('div');
-        nameCell.className = 'pl-1 text-sm font-medium text-gray-700';
+        nameCell.className = 'pl-1 text-sm font-medium text-gray-700 flex items-center';
         nameCell.innerText = name;
-        if (name === newMember) {
-          nameCell.classList.add("new-member");
+
+        if (name === "梁明淵") {
+          const tag = document.createElement('span');
+          tag.className = "new-member";
+          tag.innerText = "新加入🔥";
+          nameCell.appendChild(tag);
         }
+
         row.appendChild(nameCell);
 
         months.forEach(month => {
@@ -159,6 +157,20 @@
       });
     }
 
+    firebase.database().ref("status").on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+      for (const name in data) {
+        for (const month in data[name]) {
+          const selector = `.cell[data-name='${name}'][data-month='${month}']`;
+          const cell = document.querySelector(selector);
+          if (!cell) continue;
+          cell.classList.remove("status-paid", "status-unpaid", "status-late");
+          cell.classList.add("status-" + data[name][month]);
+        }
+      }
+    });
+
     window.onload = () => {
       createTable();
       firebase.database().ref("status").once("value", (snapshot) => {
@@ -175,20 +187,6 @@
         }
       });
     };
-
-    firebase.database().ref("status").on("value", (snapshot) => {
-      const data = snapshot.val();
-      if (!data) return;
-      for (const name in data) {
-        for (const month in data[name]) {
-          const selector = `.cell[data-name='${name}'][data-month='${month}']`;
-          const cell = document.querySelector(selector);
-          if (!cell) continue;
-          cell.classList.remove("status-paid", "status-unpaid", "status-late");
-          cell.classList.add("status-" + data[name][month]);
-        }
-      }
-    });
   </script>
 </body>
 </html>
