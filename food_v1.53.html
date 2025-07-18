@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>宜蘭園區伙食繳費登記（雲端同步）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+  <style>
+    .status-paid { background-color: #4ade80; }
+    .status-unpaid { background-color: #e5e7eb; }
+    .status-late { background-color: #f87171; }
+    .cell {
+      width: 40px;
+      height: 40px;
+      line-height: 40px;
+      text-align: center;
+      font-size: 1rem;
+      border: 1px solid #d1d5db;
+      transition: background-color 0.2s, transform 0.1s;
+    }
+    .cell:hover { transform: scale(1.05); }
+    .readonly { pointer-events: none; opacity: 0.6; }
+    .hidden-row { display: none; }
+    .new-member {
+      background: linear-gradient(to right, #fff700, #ff8c00);
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-weight: bold;
+      font-size: 0.75rem;
+      margin-left: 4px;
+      animation: flash 1s infinite alternate;
+    }
+    @keyframes flash {
+      0% { transform: scale(1); opacity: 1; }
+      100% { transform: scale(1.1); opacity: 0.6; }
+    }
+  </style>
+</head>
+<body class="bg-gradient-to-b from-gray-100 to-white min-h-screen text-gray-800">
+  <div class="max-w-3xl mx-auto p-4">
+    <div class="bg-white rounded-2xl shadow-md p-6 space-y-4">
+      <h1 class="text-2xl font-bold text-center text-gray-700">📊 宜蘭園區伙食繳費登記（雲端同步）</h1>
+
+      <div class="flex justify-between items-center mb-2">
+        <div class="flex flex-wrap gap-4 text-sm text-gray-600">
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded-full bg-gray-300 border border-gray-400"></div> 未繳
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded-full bg-green-400 border border-green-500"></div> 已繳
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="w-4 h-4 rounded-full bg-red-400 border border-red-500"></div> 逾期
+          </div>
+        </div>
+        <div class="flex gap-2">
+          <button onclick="enableAdmin()" class="bg-blue-500 hover:bg-blue-600 text-white text-sm px-3 py-1 rounded shadow">🔒 管理</button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-[120px_repeat(5,40px)] text-center text-sm font-semibold border-b border-gray-300 pb-2 mt-2">
+        <div class="text-left pl-1">姓名</div>
+        <div>8月</div><div>9月</div><div>10月</div><div>11月</div><div>12月</div>
+      </div>
+
+      <div id="table" class="divide-y divide-gray-100"></div>
+    </div>
+  </div>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAG0yH6MdSY0hMB-9upjy2Fz1OTTdgUxg",
+      authDomain: "i-lan-food.firebaseapp.com",
+      databaseURL: "https://i-lan-food-default-rtdb.asia-southeast1.firebasedatabase.app",
+      projectId: "i-lan-food",
+      storageBucket: "i-lan-food.appspot.com",
+      messagingSenderId: "1021309184657",
+      appId: "1:1021309184657:web:5a44b20ae7dd9bc962d30"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+    let isAdmin = false;
+
+    const members = [
+      "小隊長", "聰維", "題懿", "泓鑫", "文辰", "子瑋", "彥均", "育宏", "劭安", "明宏", "哲鳴", "昕豐"
+    ];
+    const months = ["8月", "9月", "10月", "11月", "12月"];
+
+    function createTable() {
+      const table = document.getElementById('table');
+      table.innerHTML = '';
+      members.forEach(name => {
+        const row = document.createElement('div');
+        row.className = "row grid grid-cols-[120px_repeat(5,40px)] items-center py-2 hover:bg-gray-50 transition";
+        row.setAttribute('data-name', name);
+
+        const nameCell = document.createElement('div');
+        nameCell.className = 'pl-1 text-sm font-medium text-gray-700 flex items-center';
+        nameCell.innerText = name;
+
+        if (["彥均", "育宏", "劭安"].includes(name)) {
+          const tag = document.createElement('span');
+          tag.className = "new-member";
+          tag.innerText = "新加入🔥";
+          nameCell.appendChild(tag);
+        }
+
+        row.appendChild(nameCell);
+
+        months.forEach(month => {
+          const cell = document.createElement('div');
+          cell.className = 'cell status-unpaid readonly';
+          cell.setAttribute('data-name', name);
+          cell.setAttribute('data-month', month);
+          cell.onclick = () => toggleStatus(cell);
+          row.appendChild(cell);
+        });
+
+        table.appendChild(row);
+      });
+    }
+
+    function toggleStatus(elem) {
+      if (!isAdmin) return;
+      const name = elem.dataset.name;
+      const month = elem.dataset.month;
+      let newStatus;
+
+      if (elem.classList.contains("status-unpaid")) {
+        elem.classList.remove("status-unpaid");
+        elem.classList.add("status-paid");
+        newStatus = "paid";
+      } else if (elem.classList.contains("status-paid")) {
+        elem.classList.remove("status-paid");
+        elem.classList.add("status-late");
+        newStatus = "late";
+      } else {
+        elem.classList.remove("status-late");
+        elem.classList.add("status-unpaid");
+        newStatus = "unpaid";
+      }
+
+      db.ref("status/" + name + "/" + month).set(newStatus);
+    }
+
+    function enableAdmin() {
+      const pwd = prompt("請輸入管理密碼：");
+      if (pwd === "4444") {
+        isAdmin = true;
+        document.querySelectorAll('.cell').forEach(el => el.classList.remove('readonly'));
+        alert("已啟用管理模式！");
+      } else {
+        alert("密碼錯誤！");
+      }
+    }
+
+    firebase.database().ref("status").on("value", (snapshot) => {
+      const data = snapshot.val();
+      if (!data) return;
+      for (const name in data) {
+        for (const month in data[name]) {
+          const selector = `.cell[data-name='${name}'][data-month='${month}']`;
+          const cell = document.querySelector(selector);
+          if (!cell) continue;
+          cell.classList.remove("status-paid", "status-unpaid", "status-late");
+          cell.classList.add("status-" + data[name][month]);
+        }
+      }
+    });
+
+    window.onload = () => {
+      createTable();
+    };
+  </script>
+</body>
+</html>
