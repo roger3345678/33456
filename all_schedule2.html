@@ -1,0 +1,571 @@
+
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8"/>
+<title>三日行程整合版</title>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<style>
+
+.button-japan {
+  display: inline-block;
+  margin: 10px 8px;
+  padding: 14px 24px;
+  font-size: 1.1em;
+  font-weight: bold;
+  border: 2px solid #b3541e;
+  border-radius: 12px;
+  background: linear-gradient(to bottom, #fffaf2, #f2d7b6);
+  color: #4a2e00;
+  box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+  cursor: pointer;
+  font-family: 'Noto Sans TC', sans-serif;
+  transition: all 0.2s ease;
+}
+.button-japan:hover {
+  background: #ffe8cc;
+  transform: scale(1.03);
+}
+
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #fffdf8;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+    .day-block {
+      border-left: 8px solid #ffa07a;
+      background-color: #fff9f0;
+      padding: 20px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .day-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #d35400;
+      border-bottom: 2px dashed #f5a623;
+      padding-bottom: 6px;
+    }
+    .event {
+      margin-bottom: 14px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .time-box {
+      min-width: 90px;
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.05em;
+      background: linear-gradient(to right, #ff9966, #ff5e62);
+      border-radius: 8px;
+      padding: 6px 12px;
+      margin-right: 15px;
+      text-align: center;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .button-line {
+      margin-left: 105px;
+      margin-top: -5px;
+      margin-bottom: 12px;
+    }
+    .button {
+      background: linear-gradient(to bottom, #ffcc66, #ff9900);
+      color: #000;
+      font-weight: bold;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    }
+    .toggle-box {
+      display: none;
+      margin: 10px 105px 20px;
+      padding: 14px;
+      background: #fffaf0;
+      border: 2px dashed #ff9900;
+      border-radius: 10px;
+      line-height: 1.7;
+      font-size: 1em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #ffe0b2;
+    }
+  
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #fffdf8;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+    .day-block {
+      border-left: 8px solid #90caf9;
+      background-color: #e3f2fd;
+      padding: 18px 22px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+      border-radius: 10px;
+    }
+    .day-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #1565c0;
+      border-bottom: 2px dashed #64b5f6;
+      padding-bottom: 6px;
+    }
+    .event {
+      margin-bottom: 12px;
+      line-height: 1.8;
+      display: flex;
+      align-items: flex-start;
+    }
+    .time-box {
+      min-width: 95px;
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.1em;
+      background: linear-gradient(to right, #64b5f6, #1976d2);
+      border-radius: 10px;
+      padding: 6px 12px;
+      margin-right: 15px;
+      text-align: center;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    }
+    .button {
+      margin-top: 6px;
+      padding: 8px 16px;
+      font-size: 1em;
+      background: linear-gradient(to bottom, #90caf9, #42a5f5);
+      color: #000;
+      font-weight: bold;
+      border: 1px solid #1e88e5;
+      border-radius: 8px;
+      cursor: pointer;
+      box-shadow: 2px 2px 6px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+    }
+    .button:hover {
+      background: linear-gradient(to bottom, #bbdefb, #64b5f6);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.3);
+      transform: translateY(-2px);
+    }
+    .toggle-box {
+      display: none;
+      margin: 10px 110px 20px;
+      padding: 16px;
+      background: #e8f5fe;
+      border: 2px dashed #64b5f6;
+      border-radius: 12px;
+      font-size: 1.05em;
+      line-height: 1.7;
+      box-shadow: 1px 1px 6px rgba(0,0,0,0.08);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1em;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #bbdefb;
+      color: #0d47a1;
+      font-weight: bold;
+    }
+    td {
+      background-color: #e3f2fd;
+    }
+  
+body {
+  background-color: #fff0f5;
+}
+.day-block {
+  border-left: 8px solid #f48fb1;
+  background-color: #fce4ec;
+}
+.day-title {
+  color: #c2185b;
+  border-bottom: 2px dashed #f06292;
+}
+.time-box {
+  background: linear-gradient(to right, #f8bbd0, #f48fb1);
+}
+.button {
+  background: linear-gradient(to bottom, #f8bbd0, #f06292);
+  border: 1px solid #ec407a;
+}
+.button:hover {
+  background: linear-gradient(to bottom, #fce4ec, #f48fb1);
+}
+.toggle-box {
+  background: #fce4ec;
+  border: 2px dashed #f48fb1;
+}
+th {
+  background-color: #f8bbd0;
+  color: #880e4f;
+}
+td {
+  background-color: #fce4ec;
+}
+
+
+    body {
+      font-family: "Noto Sans TC", sans-serif;
+      background-color: #fffdf8;
+      margin: 0;
+      padding: 20px;
+      color: #222;
+    }
+    .day-block {
+      border-left: 8px solid #ffa07a;
+      background-color: #fff9f0;
+      padding: 18px 22px;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    }
+    .day-title {
+      font-size: 1.6em;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #d35400;
+      border-bottom: 2px dashed #f5a623;
+      padding-bottom: 6px;
+    }
+    .event {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+    }
+    .time-box {
+      min-width: 90px;
+      font-weight: bold;
+      color: #fff;
+      font-size: 1.05em;
+      background: linear-gradient(to right, #ffcc66, #ff9900);
+      border-radius: 8px;
+      padding: 6px 10px;
+      margin-right: 15px;
+      text-align: center;
+      box-shadow: 1px 1px 3px rgba(0,0,0,0.1);
+    }
+    .highlight .time-box {
+      background: #fff48f;
+      color: #000;
+      animation: flash 1.4s infinite;
+    }
+    @keyframes flash {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+    .button-line {
+      margin-left: 105px;
+      margin-top: -5px;
+      margin-bottom: 12px;
+    }
+    .button {
+      background: linear-gradient(to bottom, #4aa3f0, #007be8);
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      padding: 7px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.95em;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.15);
+    }
+    .toggle-box {
+      display: none;
+      margin: 10px 105px 20px;
+      padding: 14px;
+      background: #fffaf0;
+      border: 2px dashed #ff9900;
+      border-radius: 10px;
+      line-height: 1.7;
+      font-size: 1em;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.95em;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #ffe8b2;
+    }
+  
+
+/* 手機 RWD 優化 */
+@media screen and (max-width: 600px) {
+  .day-block table {
+    width: 100%;
+    font-size: 0.95em;
+  }
+  .day-block table td, .day-block table th {
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 6px 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  .day-block table tr {
+    display: block;
+    margin-bottom: 10px;
+  }
+  .button-japan {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    font-size: 1.1em;
+  }
+  .day-title {
+    font-size: 1.2em;
+    text-align: center;
+  }
+  .toggle-box table td, .toggle-box table th {
+    font-size: 0.95em;
+  }
+}
+</style>
+<script>
+    function showDay(id) {
+      document.getElementById("day25").style.display = "none";
+      document.getElementById("day26").style.display = "none";
+      document.getElementById("day27").style.display = "none";
+      document.getElementById(id).style.display = "block";
+    }
+    function toggle(id) {
+      const box = document.getElementById(id);
+      box.style.display = (box.style.display === 'block') ? 'none' : 'block';
+    }
+  </script>
+</head>
+<body>
+<h1 style="font-family:'Noto Sans TC';color:#d35400;margin-bottom:20px;">🗓️ 三日行程一覽｜7/25～7/27</h1>
+<div style="margin-bottom: 24px;">
+<button class="button-japan" onclick="showDay('day25')">📌 Day1｜7/25 出發日</button>
+<button class="button-japan" onclick="showDay('day26')">🌸 Day2｜7/26 女生行程</button>
+<button class="button-japan" onclick="showDay('day27')">⛰️ Day3｜7/27 富士山下山</button>
+</div>
+<div class="day-section" id="day25" style="display:block;"><div class="day-block">
+<div class="day-title">📅 Day 1｜7月25日（五）出發日</div>
+<div class="event"><div class="time-box">01:30</div><div>從蘇澳出門，預計 03:00 抵達大園區平安路 157 號（日月亭接駁停車場）</div></div>
+<div class="event"><div class="time-box">03:50</div><div><span style="color:#ff6600; font-weight:bold; text-shadow:0 0 8px #ffd580;">【桃園機場第1航廈】</span> 到機場櫃台 Check-in，並上廁所</div></div>
+<div class="event"><div class="time-box">04:45</div><div>進入登機口，等待 06:45 飛機起飛</div></div>
+<div class="event"><div class="time-box">11:10</div><div>抵達成田機場</div></div>
+<div class="event"><div class="time-box">12:00</div><div>出境 → 拿著 KLOOK 電子票到 Skyliner 櫃台換實體票券（目的地：上野站）</div></div>
+<div class="button-line"><button class="button" onclick="toggle('skylinerInfo')">🚄 展開購票與換票說明</button></div>
+<div class="toggle-box" id="skylinerInfo">
+<table>
+<tr><th>櫃台位置</th><td>成田機場第1航廈 1F 南出口旁（Skyliner 售票櫃台）</td></tr>
+<tr><th>換票方式</th><td>出示 KLOOK QR Code，現場人員協助劃位與發票</td></tr>
+<tr><th>票價（台幣）</th><td>成人 NT$448｜兒童 NT$223</td></tr>
+<tr><th>日文對應</th><td>KLOOKで予約したスカイライナーのチケットを引き換えたいです。上野までお願いします。</td></tr>
+</table>
+</div>
+<div class="event"><div class="time-box">13:00</div><div>上野阿美橫町閒逛（🍱 吃中飯）</div></div>
+<div class="event"><div class="time-box">16:00</div><div>阿美橫町 → JR上野站 →（JR山手線）→ 駒込站 → 步行 → 飯店</div></div>
+<div class="button-line"><button class="button" onclick="toggle('hotelInfo')">🛏️ 展開飯店地址與密碼資訊</button></div>
+<div class="toggle-box" id="hotelInfo">
+<table>
+<tr><th>飯店名稱</th><td>Komagome Residence</td></tr>
+<tr><th>地址</th><td>1-chōme-27-1 Komagome, Toshima City, Tokyo<br/><a href="https://www.google.com/maps/place/1-chōme-27-1+Komagome,+Toshima+City,+Tokyo,+Japan" target="_blank">👉 開啟 Google 地圖</a></td></tr>
+<tr><th>房間密碼</th><td>2580</td></tr>
+<tr><th>入住 / 退房</th><td>15:00 可入住｜10:00 前退房</td></tr>
+</table>
+</div>
+</div></div>
+<div class="day-section" id="day2boys">
+<div class="day-block">
+<div class="day-title">🧗 Day 2｜7月26日（六）男生行程：富士登山出發</div>
+<table>
+<tr><th>時間</th><th>行程內容</th></tr>
+<tr>
+<td>07:30</td>
+<td>
+          新宿出發（※請在 7:20 之前到達集合地點）<br/>
+<button class="button" onclick="toggle('集合說明')">📍 展開集合地點與指引</button>
+<div class="toggle-box" id="集合說明" style="display:none;">
+<table>
+<tr><th colspan="2">【集合場所】新宿 i-Land大廈前 LOVE像</th></tr>
+<tr><td>位置</td><td>JR新宿站 西口 步行約 10 分鐘</td></tr>
+<tr><td>流程</td><td>請向舉著旅遊名稱牌子的 WILLER 工作人員出示您的預訂確認書</td></tr>
+<tr><td>提醒</td><td>乘坐的巴士不是 WILLER EXPRESS 粉紅色巴士</td></tr>
+</table>
+</div>
+<button class="button" onclick="toggle('前往新宿交通')">🚶 如何從飯店走路與搭車前往新宿</button>
+<div class="toggle-box" id="前往新宿交通" style="display:none;">
+<table>
+<tr><th>項目</th><th>內容</th></tr>
+<tr><td>出發時間</td><td>06:20</td></tr>
+<tr><td>步行路線</td><td>從飯店步行至駒込站（約 5 分鐘）</td></tr>
+<tr><td>搭乘資訊</td><td>JR 山手線，駒込 → 新宿方向（約 20 分鐘）</td></tr>
+<tr><td>車票金額</td><td>大人 200 日圓（可用 Suica 或購票機）</td></tr>
+</table>
+</div>
+</td>
+</tr>
+<tr><td>09:30</td><td>抵達裝備出租店</td></tr>
+<tr><td>11:00</td><td>抵達富士斯巴魯線五合目</td></tr>
+<tr><td>12:00</td><td>由五合目出發 →（吉田路線）</td></tr>
+<tr><td>午後</td><td>於七合目 TOMOE 館短暫休息</td></tr>
+<tr><td>傍晚</td><td>抵達本八合目山小屋（※晚餐與住宿）</td></tr>
+</table>
+</div>
+</div>
+<div class="day-section" id="day26"><div class="day-block">
+<div class="day-title">🌸 Day 2｜7月26日（六）女生行程：上野公園 &amp; 動物園探索</div>
+<div class="event"><div class="time-box">07:00</div><div>起床，準備出發前往上野公園</div></div>
+<div class="event"><div class="time-box">📍</div><div><button class="button" onclick="toggle('toStation')">🚶‍♂️ 展開導航至駒込站</button></div></div>
+<div class="toggle-box" id="toStation">
+<table>
+<tr><th>出發地</th><td>飯店（東京都文京區／駒込站附近）</td></tr>
+<tr><th>目的地</th><td>JR 駒込站</td></tr>
+<tr><th>導航連結</th><td>👉 <a href="https://www.google.com/maps/dir/?api=1&amp;destination=JR+Komagome+Station" target="_blank">點我導航</a></td></tr>
+</table>
+</div>
+<div class="event"><div class="time-box">08:00</div><div>從駒込搭 JR 山手線前往「上野站」，步行至上野公園</div></div>
+<div class="event"><div class="time-box">🎫</div><div><button class="button" onclick="toggle('ticketInfo1')">🧾 展開購票說明</button><button class="button" onclick="toggle('lineDirection')">🚇 展開搭乘方向與月台說明</button></div><div class="toggle-box" id="lineDirection">
+<table>
+<tr><th>搭乘方向</th><td>JR 山手線「外回り（そとまわり）」往上野・秋葉原方向</td></tr>
+<tr><th>月台資訊</th><td>通常為月台 2 號（以現場為準）</td></tr>
+<tr><th>月台標示</th><td>請確認標示有寫「外回り・上野・秋葉原方面」</td></tr>
+<tr><th>車內資訊</th><td>螢幕會顯示 Next: 上野（Ueno），請提前準備下車</td></tr>
+<tr><th>建議車廂</th><td>建議搭乘中段車廂，方便於上野站出站後前往公園方向</td></tr>
+</table>
+</div></div>
+<div class="toggle-box" id="ticketInfo1">
+<table>
+<tr><th>出發站</th><td>JR 駒込站</td></tr>
+<tr><th>目的地</th><td>JR 上野站（Ueno）</td></tr>
+<tr><th>票價</th><td>成人 170円、兒童 90円</td></tr>
+<tr><th>購票方式</th><td>使用 Suica / PASMO 卡，或自動售票機購票</td></tr>
+<tr><th>自動售票機操作</th><td>
+          - 請按「English」<br/>
+          - 選擇「Ueno（上野）」<br/>
+          - 選擇人數，投入金額 → 出票完成
+        </td></tr>
+<tr><th>預估時間</th><td>約 10 分鐘（含步行）</td></tr>
+</table>
+</div>
+<div class="event"><div class="time-box">08:20</div><div>抵達上野公園，拍照散步</div></div>
+<div class="event"><div class="time-box">09:00</div><div>步行前往上野動物園</div></div>
+<div class="event"><div class="time-box">🎟️</div><div><button class="button" onclick="toggle('uenoZooTicket')">🦁 展開上野動物園購票資訊</button></div></div>
+<div class="toggle-box" id="uenoZooTicket">
+<table>
+<tr><th>票價</th><td>成人 600円、國中小學生 200円</td></tr>
+<tr><th>購票方式</th><td>可現場自動售票機或線上預約網站</td></tr>
+<tr><th>營業時間</th><td>09:30–17:00（16:00 停止入園）</td></tr>
+<tr><th>地圖導航</th><td>👉 <a href="https://www.google.com/maps/place/Ueno+Zoo/" target="_blank">點我導航到動物園</a></td></tr>
+</table>
+</div>
+<div class="event"><div class="time-box">12:30</div><div>行程結束後，前往車站返回駒込或前往巢鴨</div></div>
+<div class="event"><div class="time-box">📍</div><div><button class="button" onclick="toggle('returnStation')">🚉 展開回程導航與選擇</button><button class="button" onclick="toggle('returnDirection')">🚇 展開搭車方向說明</button></div><div class="toggle-box" id="returnDirection">
+<table>
+<tr><th>回飯店（上野 → 駒込）</th><td>請搭 JR 山手線「內回り（うちまわり）」往池袋、新宿方向</td></tr>
+<tr><th>前往巢鴨（上野 → 巢鴨）</th><td>同樣搭乘「內回り」，巢鴨站在駒込前一站</td></tr>
+<tr><th>月台方向</th><td>請尋找標示「內回り・池袋・新宿方面」的方向（月台依現場為準）</td></tr>
+<tr><th>下車提醒</th><td>巢鴨站與駒込站距離近，請注意廣播並提前準備下車</td></tr>
+</table>
+</div></div>
+<div class="toggle-box" id="returnStation">
+<table>
+<tr><th>選項一</th><td>回飯店 → 搭 JR 山手線（上野 → 駒込）170円<br/>
+          👉 <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Komagome+Station" target="_blank">點我導航至駒込站</a></td></tr>
+<tr><th>選項二</th><td>前往巢鴨地藏通商店街 → 搭 JR 山手線（上野 → 巢鴨）170円<br/>
+          👉 <a href="https://www.google.com/maps/dir/?api=1&amp;destination=Sugamo+Jizodori+Shopping+Street" target="_blank">點我導航至巢鴨</a></td></tr>
+<tr><th>購票方式</th><td>Suica / PASMO 交通卡或自動售票機，站名選擇「Komagome」或「Sugamo」</td></tr>
+</table>
+</div>
+</div></div>
+<div class="day-section" id="day27"><div class="day-block">
+<div class="day-title">📅 Day 3｜7月27日（日）富士山下山與返回新宿</div>
+<div class="event"><div class="time-box">03:30</div><div>從山屋出發攻頂（約1.5小時）</div></div>
+<div class="event"><div class="time-box">05:00</div><div>登頂看御來光、拍照</div></div>
+<div class="event"><div class="time-box">05:30</div><div>開始下山（約1.5～2小時）</div></div>
+<div class="event highlight"><div class="time-box">07:30</div><div>【重要】預計抵達五合目，整裝完畢</div></div>
+<div class="event highlight"><div class="time-box">09:00</div><div>搭乘計程車 → 河口湖站（約45分鐘）</div></div>
+<div class="button-line"><button class="button" onclick="toggle('taxiNote')">🈶 展開給司機看的日文</button></div>
+<div class="toggle-box" id="taxiNote">
+<p><strong>🈸 請出示給計程車司機：</strong><br/>
+      午前9時に河口湖駅までの予約があります。<br/>
+      （我們有預定09:00 前往河口湖站）</p>
+</div>
+<div class="event"><div class="time-box">09:53</div><div>搭乘富士急行線 → 大月站（預計 10:48 抵達）</div></div>
+<div class="event"><div class="time-box">10:54</div><div>搭乘 JR 中央線快速 → 新宿站（預計 11:57 抵達）</div></div>
+<div class="event highlight"><div class="time-box">12:00</div><div>與老婆及家人於新宿會合</div></div><div class="button-line"><button class="button" onclick="toggle('naritaChoices')">✈️ 展開從新宿前往成田機場三種方式</button></div><div class="toggle-box" id="naritaChoices">
+<table>
+<tr>
+<th>方式</th>
+<th>所需時間</th>
+<th>票價（成人）</th>
+<th>優點</th>
+</tr>
+<tr>
+<td>N’EX 成田特快</td>
+<td>約 1 小時 25 分</td>
+<td>約 3,250 円</td>
+<td>✅ 直達、座位舒適、不需換車</td>
+</tr>
+<tr>
+<td>京成 Skyliner</td>
+<td>約 1 小時 10 分（含轉乘）</td>
+<td>約 2,570 円</td>
+<td>💰 便宜但需轉車至日暮里站</td>
+</tr>
+<tr>
+<td>機場巴士</td>
+<td>約 1.5 小時（視交通狀況）</td>
+<td>約 3,200 円</td>
+<td>🧳 行李方便、不用換車</td>
+</tr>
+</table>
+<p style="margin-top:10px;"><strong>購票地點：</strong><br/>
+N’EX：JR 綠色窗口（みどりの窓口）或自動售票機<br/>
+Skyliner：至日暮里站轉乘並購票<br/>
+機場巴士：新宿西口巴士總站窗口或機器購票
+</p>
+</div>
+<div class="button-line"><button class="button" onclick="toggle('toShinjuku')">🚉 展開從飯店到新宿搭車細節</button></div>
+<div class="toggle-box" id="toShinjuku">
+<table>
+<tr><th>步行路線</th><td>從飯店步行約 6 分鐘至「JR 駒込站」南口</td></tr>
+<tr><th>購票方式</th><td>使用 Suica / PASMO 交通卡，或自動售票機購票（選擇「新宿」站）</td></tr>
+<tr><th>票價</th><td>成人約 200～220 円</td></tr>
+<tr><th>搭乘方向</th><td>請搭 JR 山手線「內回り」往「池袋・新宿方向」</td></tr>
+<tr><th>月台標示</th><td>尋找「內回り・池袋・新宿」方向月台</td></tr>
+<tr><th>搭乘時間</th><td>約 16 分鐘可抵達新宿站</td></tr>
+<tr><th>下車後說明</th><td>於新宿站中央東口出站，依指標前往 N’EX、Skyliner 巴士等售票點</td></tr>
+</table>
+</div>
+</div></div>
+</body>
+</html>
